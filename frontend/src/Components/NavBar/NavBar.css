@@ -1,0 +1,25 @@
+.nav {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.nav img {
+  max-width: 200px;
+}
+
+.nav__connect-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav__connect-link:hover {
+  text-decoration: underline;
+}
+
+.nav__connect-link i {
+  margin-right: 0.25rem;
+}
+
+.nav-connected a:first-child {
+  margin-right: 1rem;
+}

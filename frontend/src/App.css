@@ -1,0 +1,160 @@
+/*** GLOBAL STYLE OF APP ***/
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  color: #2c3e50;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+}
+
+/*** Layout ***/
+.ly--full-container {
+  width: 100%;
+  padding-right: 40px;
+  padding-left: 40px;
+  margin: auto;
+}
+
+.ly--lg-container {
+  max-width: 1440px;
+  width: 100%;
+  padding-right: 80px;
+  padding-left: 80px;
+  margin: auto;
+}
+
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.justify-content--center {
+  justify-content: center;
+}
+
+.justify-content--space-between {
+  justify-content: space-between;
+}
+
+.justify-content--end {
+  justify-content: end;
+}
+
+.align-items--center {
+  align-items: center;
+}
+
+/*** Type of text ***/
+.title-xl {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.title-lg {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.title-md {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.title-sm {
+  color: #222;
+  font-size: 1.25rem;
+}
+
+.fw--700 {
+  font-weight: 700;
+}
+
+/*** Style of text ***/
+.text--center {
+  text-align: center;
+}
+
+/*** Margins ***/
+.mt--lg {
+  margin-top: 1.5rem;
+}
+
+.mt--md {
+  margin-top: 1.2rem;
+}
+
+
+.mb--md {
+  margin-bottom: 2rem;
+}
+
+
+.mb--sm {
+  margin-bottom: 1rem;
+}
+
+.mx--auto {
+  margin: auto;
+}
+
+/*** Sizing ***/
+.mw--300 {
+  max-width: 300px;
+}
+
+.mw--370 {
+  max-width: 370px;
+}
+
+.w--100 {
+  width: 100%;
+}
+/*** Themes ***/
+.t--dark {
+  background-color: #12002b;
+}
+
+/*** Buttons ***/
+.btn--plain {
+  display: block;
+  text-align: center;
+  padding: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.btn--plain.btn--green {
+  border-color: #00bc77;
+  background-color: #00bc77;
+  color: #fff;
+}
+
+.btn--plain.btn--green:hover {
+  border-color: #005834;
+  background-color: #005834;
+  cursor: pointer;
+}
+
+@media(max-width: 992px) {
+  .ly--lg-container,
+  .ly--full-container {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
