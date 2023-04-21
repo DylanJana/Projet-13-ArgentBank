@@ -1,0 +1,16 @@
+.container-error {
+  padding-top: 32px;
+  padding-bottom: 32px;
+  flex-direction: column;
+  min-height: 93vh;
+}
+
+.container-error img {
+  max-width: 600px;
+}
+
+@media(max-width: 767px) {
+  .container-error img {
+    max-width: 320px;
+  }
+}

@@ -1,0 +1,37 @@
+.hero {
+  background-image: url('../../assets/img/bank-tree.webp');
+  background-position: 0% 33%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding-top: 103px;
+  padding-bottom: 103px;
+}
+
+.hero-content {
+  background: white;
+  padding: 2rem;
+}
+
+.features {
+  padding-top: 2.5em;
+  padding-bottom: 2.5rem;
+  column-gap: 80px;
+}
+
+.feature-icon {
+  max-width: 152px;
+  border: 10px solid #00bc77;
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+@media(max-width: 992px) {
+  .hero div div {
+    justify-content: center;
+  }
+
+  .features {
+    flex-direction: column;
+    row-gap: 80px;
+  }
+}
