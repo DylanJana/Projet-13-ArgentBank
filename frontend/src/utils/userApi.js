@@ -15,6 +15,7 @@ export const connectUser = async(email, password) => {
       if(data.body?.token) {
         // token is equal to a JSON Web Token to inform that an user has connected
         const token = `Bearer ${data.body.token}` ;
+        console.log("TOKEN TROUVE ", token)
         userInfos = getInfosProfile(token);
       } else {
         throw new Error("Error API")
@@ -25,15 +26,15 @@ export const connectUser = async(email, password) => {
 
 export const getInfosProfile = async(token) => {
   let userInfos;
-  const header = {
-    Authorization: token.string,
+  const headers = {
+    Authorization: token.toString(),
     "Content-Type": "application/json"
   }
   await axios
     // Run request post on url http://localhost:3001/api/v1/user/profile.
     // My first parameter is an empty object
     // My second parameter is a configuration of the request post
-    .post(`${BASEURL}user/profile`, {}, { header })
+    .post(`${BASEURL}user/profile`, {}, {headers})
     .then(({data}) => {
       userInfos = data.body;
     });
@@ -41,13 +42,13 @@ export const getInfosProfile = async(token) => {
 }
 
 export const setInfosProfile = async(firstName, lastName, token) => {
-  const header = {
-    Authorization: token.string,
+  const headers = {
+    Authorization: token.toString(),
     "Content-Type": "application/json"
   }
   await axios
     // Put is use to change my resource
-    .put(`${BASEURL}/user/profile`, {firstName, lastName}, {header})
+    .put(`${BASEURL}/user/profile`, {firstName, lastName}, {headers})
     .then((response) => {
       return response;
     })
