@@ -1,8 +1,7 @@
-import axios from 'axios';
+import axios from 'axios'
+import localforage from "localforage"
 
-const BASEURL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1/';
-
-console.log("AXIOS", axios)
+const BASEURL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1/'
 
 export const connectUser = async(email, password) => {
   let userInfos;
@@ -14,9 +13,9 @@ export const connectUser = async(email, password) => {
     .then(({data}) => {
       if(data.body?.token) {
         // token is equal to a JSON Web Token to inform that an user has connected
-        const token = `Bearer ${data.body.token}` ;
-        console.log("TOKEN TROUVE ", token)
-        userInfos = getInfosProfile(token);
+        const token = `Bearer ${data.body.token}`
+        userInfos = getInfosProfile(token)
+        localforage.setItem('token', token);
       } else {
         throw new Error("Error API")
       }
