@@ -10,6 +10,9 @@ import SignIn from './Pages/SignIn/SignIn'
 // Import React Router Dom to use Routes & Route methode
 import {Routes, Route, Navigate} from 'react-router-dom';
 
+// Import call API
+import './utils/userApi';
+
 
 import './App.css';
 
