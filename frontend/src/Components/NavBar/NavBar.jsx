@@ -18,7 +18,6 @@ export default function NavBar() {
   const dispatch = useDispatch()
 
   const handleDisconnect = () => {
-    console.log("DISCONNECT")
     dispatch(userDisconnected())
   }
 

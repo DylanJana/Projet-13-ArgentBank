@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
-import localforage from "localforage"
+import localforage from 'localforage'
 
 // Create my initial state
 const initialState = {
@@ -16,11 +16,19 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       return {
+        ...state,
         ...action.payload, userConnected: true
       }
     },
+    setUserProfil: (state, {payload}) => {
+      return {
+        ...state,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+      }
+    },
+
     userDisconnected: (state) => {
-      console.log("IN DISCONNECT")
       localforage.removeItem('token')
       return initialState
     }
@@ -29,5 +37,5 @@ const userSlice = createSlice({
 
 // extract action and reducer
 const {actions, reducer} = userSlice
-export const {setUser, userDisconnected} = actions
+export const {setUser, setUserProfil, userDisconnected} = actions
 export default reducer

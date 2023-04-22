@@ -30,6 +30,27 @@
   margin-left: auto;
 }
 
+.form-edit-profil__container {
+  column-gap: 16px;
+}
+
+.form-edit-profil__container input {
+  color: #2c3e50;
+  border: 1px solid #005834;
+  font-size: 1.2rem;
+  padding: 8px;
+}
+
+.form-edit-profil__container input:focus,
+.form-edit-profil__container input:focus-visible {
+  border: 2px solid #005834;
+  outline: 0;
+}
+
+.form-edit-profil__container input::placeholder {
+  color: lightgrey;
+}
+
 @media(max-width: 768px) {
   .account-main__card {
     flex-direction: column;
@@ -43,5 +64,22 @@
 
   .transaction-button {
     max-width: 100%;
+  }
+}
+
+@media(max-width: 568px) {
+  .account-main__card {
+    width: 100%;
+  }
+  
+  .form-edit-profil {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .form-edit-profil__container {
+    flex-direction: column;
+    row-gap: 8px;
   }
 }

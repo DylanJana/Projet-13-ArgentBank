@@ -1,8 +1,6 @@
 import axios from 'axios'
 import localforage from "localforage"
-
 const BASEURL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api/v1/'
-
 export const connectUser = async(email, password) => {
   let userInfos;
   await axios
@@ -15,12 +13,12 @@ export const connectUser = async(email, password) => {
         // token is equal to a JSON Web Token to inform that an user has connected
         const token = `Bearer ${data.body.token}`
         userInfos = getInfosProfile(token)
-        localforage.setItem('token', token);
+        localforage.setItem('token', token)
       } else {
         throw new Error("Error API")
       }
     })
-    return userInfos;
+    return userInfos
 }
 
 export const getInfosProfile = async(token) => {
@@ -35,19 +33,20 @@ export const getInfosProfile = async(token) => {
     // My second parameter is a configuration of the request post
     .post(`${BASEURL}user/profile`, {}, {headers})
     .then(({data}) => {
-      userInfos = data.body;
+      userInfos = data.body
     });
     return userInfos
 }
 
 export const setInfosProfile = async(firstName, lastName, token) => {
   const headers = {
-    Authorization: token.toString(),
+    Authorization: token,
     "Content-Type": "application/json"
   }
+
   await axios
     // Put is use to change my resource
-    .put(`${BASEURL}/user/profile`, {firstName, lastName}, {headers})
+    .put(`${BASEURL}user/profile`, {firstName, lastName}, {headers})
     .then((response) => {
       return response;
     })
