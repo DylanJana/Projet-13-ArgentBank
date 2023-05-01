@@ -110,6 +110,124 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  user/transaction:
+     post:
+      security:
+        - Bearer: []
+      tags:
+        - User transaction
+      summary: User Transaction API
+      description: API for fetching a user transaction
+      parameters:
+        - in: header
+          type : string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction retrieved successully
+          schema:
+            $ref: '#/definitions/Transactions'
+        '400':
+          description: Invalid Datas
+        '500':
+          description: Internal Server Error
+  user/transaction/details:
+     post:
+      security:
+        - Bearer: []
+      tags:
+        - User transaction
+      summary: User Transaction API
+      description: API for fetching a user transactions
+      parameters:
+        - in: header
+          type : string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/BodyTransactionsDetails'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction details retrieved successully
+          schema:
+            $ref: '#/definitions/TransactionDetails'
+        '400':
+          description: Invalid Datas
+        '500':
+          description: Internal Server Error
+  user/transaction/edit/category:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User transaction
+      summary: User Transaction API
+      description: API for fetching a user transactions
+      parameters:
+        - in: header
+          type: string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Update category
+          required: true
+          schema:
+            $ref: '#/definitions/EditBodyTransactionCategory'
+      produces:
+        - application/json
+      response:
+        '200' :
+           description: Update category successully.
+           schema:
+            $ref: '#/definitions/EditTransactionCategory'
+        '400':
+          description: Update Invalid
+        '500':
+          description: Internal Server Error
+  user/transaction/edit/notes:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User transaction
+      summary: User Transaction API
+      description: API for fetching a user transactions
+      parameters:
+      - in: header
+        type : string
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+      - in: body
+        name: body
+        description: Update notes
+        required: true
+        schema:
+          $ref: '#/definitions/EditBodyTransactionNote'
+        produces:
+          - application/json
+        responses:
+          '200':
+            description: Update notes successully
+            schema:
+              $ref: '#/definitions/EditTransactionNote'
+          '400':
+            description: Update Invalid
+          '500':
+            description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -164,3 +282,108 @@ definitions:
         type: string
       lastName:
         type: string
+  Transactions:
+    type: object
+    description: Transaction lists for the month
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+            description: ID of transaction
+          date:
+            type: string
+            description: date of transaction making
+          amount:
+            type: number
+            format: float
+            description: amount of transaction in dollars
+          balance:
+            type: number
+            format: float
+            description: total amount in dollars
+  BodyTransactionsDetails:
+    type: object
+    description: Details of transactions for the current month
+    properties:
+      id:
+        type: integer
+        description: ID of transaction
+  TransactionDetails:
+    type: object
+    description: Details of the chosen transaction
+    properties:
+      status:
+        type: integer
+      message: 
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+            description: ID of transaction in dollars
+          date:
+            type: string
+            description: date of transaction
+          description:
+            type: string
+            description: description of the transaction
+          amount:
+            type: number
+            format: float
+            description: amount of transaction in dollars
+          balance:
+            type: number
+            format: float
+            description: amount total in dollars
+          transaction_type:
+            type: string
+            description: type of transaction
+          category:
+            type: string
+            description: category of transaction
+          notes:
+            type: string
+            description: notes of transaction
+  EditBodyTransactionCategory : 
+    type: object
+    description: edit category of current transaction
+    properties:
+      id:
+        type: integer
+        description: id of current transaction
+      category:
+        type: string
+        description: category name of current transaction
+  EditTransactionCategory :
+    type: object
+    description : category of this transaction. Update.
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+  EditBodyTransactionNote : 
+      type: object
+      description : edit note of this transaction.
+      properties :
+        id :
+          type : integer
+          description : id of current transaction
+        note :
+          type : string
+          description: notes of current transaction
+  EditTransactionNote :
+    type: object
+    description : note of this transaction. Update.
+    properties:
+      status:
+        type: integer
+      message:
+        type: string   
