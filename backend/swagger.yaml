@@ -110,8 +110,34 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  user/transaction:
-     post:
+  /user/transactions:
+    get:
+      security:
+        - Bearer : []
+      tags:
+      - User transaction
+      summary: "Get all transactions"
+      description: "Get all transactions of the transactions list"
+      produces:
+      - "application/json"
+      parameters:
+      - in: header
+        type : string
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+      responses:
+        '200':
+          description: Transactions completed successfully
+          schema:
+            $ref: '#/definitions/Transactions'
+        '401':
+          description: Authorization error
+        '404':
+          description: Transactions does not exist
+        '500':
+          description: Internal Server Error
+    post:
       security:
         - Bearer: []
       tags:
@@ -131,18 +157,47 @@ paths:
           description: User transaction retrieved successully
           schema:
             $ref: '#/definitions/Transactions'
-        '400':
-          description: Invalid Datas
+        '401':
+          description: Authorization error
+        '404':
+          description: Transactions does not exist
         '500':
           description: Internal Server Error
-  user/transaction/details:
-     post:
+  /user/transactions/{transactionID}:
+    get:
+      security:
+        - Bearer : []
+      tags:
+      - Transaction View
+      summary: "Get a single transaction"
+      description: "Get a single transaction of the transactions list"
+      produces:
+      - "application/json"
+      parameters: 
+      - in: path
+        name: transactionID
+        description: Id of transaction
+        required: true
+        type: string
+      responses:
+        '200':
+          description: "Transaction retrieved successfully"
+          schema:
+            $ref: '#/definitions/Transaction'
+        '401':
+          description: Authorization error
+        '404':
+          description: Transaction does not exist
+        '500':
+          description: Internal Server Error
+  /user/transactions/{transactionID}/details:
+    post:
       security:
         - Bearer: []
       tags:
-        - User transaction
-      summary: User Transaction API
-      description: API for fetching a user transactions
+        - Transaction View
+      summary: Transaction details
+      description: Details of transaction choosen
       parameters:
         - in: header
           type : string
@@ -159,21 +214,23 @@ paths:
         - application/json
       responses:
         '200':
-          description: User transaction details retrieved successully
+          description: Transaction details retrieved successully
           schema:
             $ref: '#/definitions/TransactionDetails'
-        '400':
-          description: Invalid Datas
+        '401':
+          description: Authorization error
+        '404':
+          description: Transaction details does not exist
         '500':
           description: Internal Server Error
-  user/transaction/edit/category:
+  /user/transactions/{transactionID}/edit/category:
     put:
       security:
         - Bearer: []
       tags:
-        - User transaction
-      summary: User Transaction API
-      description: API for fetching a user transactions
+        - Transaction View
+      summary: Edit transaction category
+      description: Update category of a transaction
       parameters:
         - in: header
           type: string
@@ -185,26 +242,60 @@ paths:
           description: Update category
           required: true
           schema:
-            $ref: '#/definitions/EditBodyTransactionCategory'
+            $ref: '#/definitions/EditBody'
       produces:
         - application/json
       response:
         '200' :
            description: Update category successully.
            schema:
-            $ref: '#/definitions/EditTransactionCategory'
-        '400':
-          description: Update Invalid
+            $ref: '#/definitions/Edit'
+        '401':
+          description: Authorization error
+        '404':
+          description: Update error
         '500':
           description: Internal Server Error
-  user/transaction/edit/notes:
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction View
+      summary: Delete transaction category
+      description: Delete category of a transaction
+      parameters:
+        - in: header
+          type: string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Delete choosen category
+          required: true
+          schema:
+            $ref: '#/definitions/EditBody'
+      produces:
+        - application/json
+      response:
+        '200' :
+           description: Delete category successully.
+           schema:
+            $ref: '#/definitions/Edit'
+        '401':
+          description: Authorization error
+        '404':
+          description: Delete is not possible
+        '500':
+          description: Internal Server Error
+  /user/transactions/{transactionID}/edit/notes:
     put:
       security:
         - Bearer: []
       tags:
-        - User transaction
-      summary: User Transaction API
-      description: API for fetching a user transactions
+        - Transaction View
+      summary: Edit transaction notes
+      description: Update notes of a transaction
       parameters:
       - in: header
         type : string
@@ -216,18 +307,50 @@ paths:
         description: Update notes
         required: true
         schema:
-          $ref: '#/definitions/EditBodyTransactionNote'
+          $ref: '#/definitions/EditBody'
         produces:
           - application/json
         responses:
           '200':
             description: Update notes successully
             schema:
-              $ref: '#/definitions/EditTransactionNote'
+              $ref: '#/definitions/Edit'
           '400':
             description: Update Invalid
           '500':
             description: Internal Server Error
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction View
+      summary: Delete transaction notes
+      description: Delete notes of a transaction
+      parameters:
+        - in: header
+          type: string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Delete choosen notes
+          required: true
+          schema:
+            $ref: '#/definitions/EditBody'
+      produces:
+        - application/json
+      response:
+        '200' :
+           description: Delete notes successully.
+           schema:
+            $ref: '#/definitions/Edit'
+        '401':
+          description: Authorization error
+        '404':
+          description: Delete is not possible
+        '500':
+          description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -281,6 +404,26 @@ definitions:
       firstName:
         type: string
       lastName:
+        type: string
+  Transaction:
+    type: object
+    properties:
+      date:
+        type: string
+      description:
+        type: string
+      amount: 
+        type: integer
+        format: int64
+      balance:
+        type: integer
+        format: int64
+      transaction_type:
+        type: string
+        description: type of transaction 
+      category:
+        type: string
+      note: 
         type: string
   Transactions:
     type: object
@@ -351,39 +494,22 @@ definitions:
           notes:
             type: string
             description: notes of transaction
-  EditBodyTransactionCategory : 
+  EditBody : 
     type: object
-    description: edit category of current transaction
+    description: Your action is a success
     properties:
       id:
         type: integer
-        description: id of current transaction
+        description: id of transaction
       category:
         type: string
-        description: category name of current transaction
-  EditTransactionCategory :
-    type: object
-    description : category of this transaction. Update.
-    properties:
-      status:
-        type: integer
-      message:
+      note:
         type: string
-  EditBodyTransactionNote : 
-      type: object
-      description : edit note of this transaction.
-      properties :
-        id :
-          type : integer
-          description : id of current transaction
-        note :
-          type : string
-          description: notes of current transaction
-  EditTransactionNote :
+  Edit :
     type: object
-    description : note of this transaction. Update.
+    description : Your action is a success
     properties:
       status:
         type: integer
       message:
-        type: string   
+        type: string 
