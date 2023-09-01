@@ -57,7 +57,8 @@ export default function SignIn() {
               type="checkbox"
               value={remember}
               onChange={() => setRemember(!remember)} 
-              id="remember-me" />
+              id="remember-me"
+              checked />
               <label htmlFor="remember-me">Remember me</label>
             </div>
             <button
