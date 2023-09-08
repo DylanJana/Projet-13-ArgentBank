@@ -110,14 +110,14 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /user/transactions:
+  /user/accounts/{accountId}:
     get:
       security:
         - Bearer : []
       tags:
-      - User transaction
-      summary: "Get all transactions"
-      description: "Get all transactions of the transactions list"
+      - User Transactions
+      summary: Get all accounts of user's
+      description: API for getting all accounts
       produces:
       - "application/json"
       parameters:
@@ -126,29 +126,111 @@ paths:
         name: Authorization
         description: Attach Bearer JWT token
         required: true
+      - in: path
+        name: accountId
+        description: User's account ID
+        type: string
+        required: true
       responses:
         '200':
-          description: Transactions retrieved successfully
+          description: Account's of users received
+        '401':
+          description: Authorization error
+        '404':
+          description: Accounts list does not exist
+        '500':
+          description: Internal Server Error
+  /user/accounts/{accountId}/transactions:
+    get:
+      security:
+        - Bearer : []
+      tags:
+      - User Transactions
+      summary: Get all transactions of specific account ID
+      description: API for getting all transactions of specific account ID
+      produces:
+      - "application/json"
+      parameters:
+      - in: header
+        type : string
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+      - in: path
+        name: accountId
+        description: User's account ID
+        type: string
+        required: true
+      responses:
+        '200':
+          description: All transactions of your account have been received
           schema:
             $ref: '#/definitions/Transactions'
         '401':
           description: Authorization error
         '404':
-          description: Transactions does not exist
+          description: Maybe this account does not exist or the ID is wrong
+        '500':
+          description: Internal Server Error
+  /user/accounts/{accountId}/transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions
+      summary: Get a specific transaction in list transactions
+      description: API for getting a specific transaction in a list transactions
+      parameters:
+        - in: header
+          type : string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountId
+          description: User's account ID
+          type: string
+          required: true
+        - in: path
+          name: transactionId
+          description: Transaction ID to get
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction sending successully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '401':
+          description: Authorization error
+        '404':
+          description: Transactions does not correct
         '500':
           description: Internal Server Error
     post:
       security:
         - Bearer: []
       tags:
-        - User transaction
-      summary: User Transaction API
-      description: Post a transaction
+        - User Transactions
+      summary: Posting a new transaction to the list of transactions
+      description: API for posting a new transaction in a transactions list
       parameters:
         - in: header
           type : string
           name: Authorization
           description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountId
+          description: User's account ID
+          type: string
+          required: true
+        - in: path
+          name: transactionId
+          description: Transaction ID to create
+          type: string
           required: true
         - in: body
           name: body
@@ -160,7 +242,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: User transaction sending successully
+          description: Transaction sending successully
           schema:
             $ref: '#/definitions/Transactions'
         '401':
@@ -169,56 +251,29 @@ paths:
           description: Transactions does not correct
         '500':
           description: Internal Server Error
-  /user/transactions/{transactionID}:
-    get:
-      security:
-        - Bearer : []
-      tags:
-      - Transaction View
-      summary: "Get a single transaction"
-      description: "Get a single transaction of the transactions list"
-      produces:
-      - "application/json"
-      parameters: 
-      - in: path
-        name: transactionID
-        description: Id of transaction
-        required: true
-        type: string
-      - in: header
-        type : string
-        name: Authorization
-        description: Attach Bearer JWT token
-        required: true
-      responses:
-        '200':
-          description: "Transaction retrieved successfully"
-          schema:
-            $ref: '#/definitions/Transaction'
-        '401':
-          description: Authorization error
-        '404':
-          description: Transaction does not exist
-        '500':
-          description: Internal Server Error
     put:
       security:
       - Bearer: []
       tags:
-      - Transaction View
+      - User Transactions
       summary: Edit transaction
       description: Update current transaction
       parameters:
-      - in: path
-        name: transactionID
-        description: Id of transaction
-        required: true
-        type: string
       - in: header
         type: string
         name: Authorization
         description: Attach Bearer JWT token
         required: true
+      - in: path
+        name: AccountId
+        description: Id of account with the transaction to update
+        required: true
+        type: string
+      - in: path
+        name: transactionID
+        description: Id of transaction to update
+        required: true
+        type: string
       - in: body
         name: body
         description: Update transaction
@@ -229,7 +284,7 @@ paths:
       - application/json
       response:
       '200' :
-          description: Update category successully.
+          description: Update transaction successully.
       '401':
         description: Authorization error
       '404':
@@ -240,19 +295,24 @@ paths:
       security:
         - Bearer: []
       tags:
-        - Transaction View
+        - User Transactions
       summary: Delete current transaction
       description: Delete transaction with this ID
       parameters:
-        - in: path
-          type: string
-          name: transactionID
-          description: Id of transaction
-          required: true
         - in: header
           type: string
           name: Authorization
           description: Attach Bearer JWT token
+          required: true
+        - in: path
+          type: string
+          name: accountID
+          description: Id of account who has the transaction to delete
+          required: true
+        - in: path
+          type: string
+          name: transactionId
+          description: Id of transaction to delete
           required: true
       produces:
         - application/json
@@ -264,7 +324,95 @@ paths:
         '404':
           description: Delete is not possible
         '500':
-          description: Internal Server Error
+          description: Internal Server Error    
+  /user/accounts/{accountId}/transactions/{transactionId}/category:
+    put:
+      security:
+      - Bearer: []
+      tags: 
+      - Transaction View
+      summary: Edit transaction category
+      description: API to edit category of a specific transaction
+      parameters:
+      - in: header
+        type: string
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+      - in: path
+        name: accountID
+        description: Id of account
+        type: string
+      - in: path
+        name: transactionID
+        description: Id of transaction
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update category of this transaction
+        required: true
+        schema:
+          $ref: '#/definitions/TransactionsUpdateCategory'
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      response:
+      '200' :
+          description: Update category successully.
+          schema:
+            $ref: '#/definitions/Transactions'
+      '401':
+        description: Authorization error
+      '404':
+        description: Update category error, maybe ID of this account or ID of this transaction false
+      '500':
+        description: Internal Server Error
+  /user/accounts/{accountId}/transactions/{transactionId}/notes:
+    put:
+      security:
+      - Bearer: []
+      tags: 
+      - Transaction View
+      summary: Edit transaction notes
+      description: API to edit notes of a specific transaction
+      parameters:
+      - in: header
+        type: string
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+      - in: path
+        name: accountID
+        description: Id of account
+        type: string
+      - in: path
+        name: transactionID
+        description: Id of transaction
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update category of this transaction
+        required: true
+        schema:
+          $ref: '#/definitions/TransactionsUpdateNotes'
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      response:
+      '200' :
+          description: Update notes successully.
+          schema:
+            $ref: '#/definitions/Transactions'
+      '401':
+        description: Authorization error
+      '404':
+        description: Update notes error, maybe ID of this account or ID of this transaction false
+      '500':
+        description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -364,6 +512,16 @@ definitions:
             type: number
             format: float
             description: total amount in dollars
+  TransactionsUpdateCategory:
+    type: object
+    properties:
+      category:
+        type: string
+  TransactionsUpdateNotes:
+    type: object
+    properties:
+      notes:
+        type: string
   BodyTransactionsDetails:
     type: object
     description: Details of transactions for the current month
@@ -408,7 +566,6 @@ definitions:
           notes:
             type: string
             description: notes of transaction
-  
     type: object
     description : Your action is a success
     properties:
