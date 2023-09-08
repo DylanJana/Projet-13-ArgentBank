@@ -5,7 +5,7 @@ import Footer from './Components/Footer/Footer'
 import Home from './Pages/Home/Home'
 import Page404 from './Pages/Page404/Page404'
 import Profil from './Pages/Profil/Profil'
-import SignIn from './Pages/SignIn/SignIn'
+import SignIn from './Pages/Signin/Signin'
 
 // Import React Router Dom to use Routes & Route methode
 import {Routes, Route, Navigate} from 'react-router-dom'
